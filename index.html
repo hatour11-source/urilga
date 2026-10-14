@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>H&amp;A Travel: Шинэ жилийн баярын урилга</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Nunito:wght@600;800&family=Marck+Script&display=swap">
+<style>
+:root{
+  --pine:#0a3a2c;--pine2:#041a14;--red:#e0243c;--gold:#ffc93c;--cream:#fff6e2;--ink:#3a1a14;
+  box-sizing:border-box;color-scheme:dark;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+body{margin:0;min-height:100vh;color:var(--cream);font-family:"Nunito",system-ui,sans-serif;overflow-x:hidden;
+  background:radial-gradient(120% 80% at 50% 0%,#1b7a5c,var(--pine) 55%,var(--pine2)) fixed}
+body::before,body::after{content:"";position:fixed;z-index:0;width:70vmax;height:70vmax;border-radius:50%;filter:blur(70px);opacity:.28;pointer-events:none;animation:drift 18s ease-in-out infinite alternate}
+body::before{left:-25vmax;top:-20vmax;background:radial-gradient(circle,#ffc93c,transparent 65%)}
+body::after{right:-25vmax;bottom:-25vmax;background:radial-gradient(circle,#e0243c,transparent 65%);animation-delay:-9s}
+@keyframes drift{to{transform:translate(8vmax,6vmax) scale(1.15)}}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:20}
+#wire{position:absolute;left:0;top:0;width:100%;height:70px;z-index:3;pointer-events:none}
+.bulb{animation:blink 1.6s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+main{position:relative;z-index:2;max-width:560px;margin:0 auto;padding:54px 18px 48px;text-align:center}
+.greet{font-family:"Marck Script",cursive;font-size:clamp(2rem,9vw,2.8rem);margin:0;line-height:1.1;text-shadow:0 2px 10px rgba(0,0,0,.35)}
+.year{font-family:"Rubik Mono One",system-ui,sans-serif;font-size:clamp(3.6rem,20vw,6.8rem);line-height:1.05;margin:4px 0 0;letter-spacing:.02em;
+  background:linear-gradient(100deg,#ffb100 0%,#fff2a8 30%,#ffc93c 50%,#fff2a8 70%,#ffb100 100%) 0 0/250% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(4px 4px 0 var(--red)) drop-shadow(0 10px 18px rgba(0,0,0,.4));animation:shine 5s linear infinite}
+@keyframes shine{to{background-position:-250% 0}}
+.tree{width:min(220px,55vw);display:block;margin:6px auto 0;overflow:visible;filter:drop-shadow(0 0 26px rgba(255,201,60,.28)) drop-shadow(0 12px 14px rgba(0,0,0,.3))}
+.orn{cursor:pointer;transform-box:fill-box;transform-origin:center;transition:transform .2s;animation:sway 3s ease-in-out infinite}
+.orn:hover{transform:scale(1.3)}
+@keyframes sway{50%{transform:translateY(3px)}}
+.tw{animation:blink 1.3s ease-in-out infinite}
+.star{transform-box:fill-box;transform-origin:center;animation:spin 6s linear infinite;filter:drop-shadow(0 0 12px var(--gold))}
+@keyframes spin{50%{transform:scale(1.2) rotate(8deg)}}
+
+.gift{display:block;margin:-6px auto 0;width:150px;border:0;background:none;padding:0;cursor:pointer;animation:wiggle 2.4s ease-in-out infinite;transform-origin:50% 100%;filter:drop-shadow(0 8px 12px rgba(0,0,0,.35))}
+@keyframes wiggle{0%,60%,100%{transform:rotate(0)}70%{transform:rotate(-5deg)}80%{transform:rotate(5deg)}90%{transform:rotate(-3deg)}}
+.lid{transform-box:fill-box;transform-origin:50% 100%;transition:transform .8s cubic-bezier(.3,1.6,.5,1),opacity .8s .2s}
+.opened .lid{transform:translate(-30px,-70px) rotate(-24deg);opacity:0}
+.opened .gift{animation:none;cursor:default}
+.gift:focus-visible,.btn:focus-visible,.orn:focus-visible,.ask input:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+.hint{margin:12px 0 0;font-weight:800;color:var(--gold);text-shadow:0 2px 4px rgba(0,0,0,.5)}
+.opened .hint{display:none}
+
+.card{display:none;position:relative;margin-top:16px;background:linear-gradient(180deg,#fffaf0,var(--cream));color:var(--ink);text-align:left;border-radius:26px;padding:30px 24px 24px;
+  border:4px solid var(--gold);box-shadow:0 0 0 4px var(--red),0 25px 50px rgba(0,0,0,.5)}
+.card::before{content:"";position:absolute;inset:8px;border:1.5px solid rgba(224,36,60,.3);border-radius:18px;pointer-events:none}
+.opened .card{display:block;animation:pop .8s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes pop{from{opacity:0;transform:translateY(30px) scale(.9)}to{opacity:1;transform:none}}
+.card h2{font-family:"Marck Script",cursive;font-weight:400;color:var(--red);font-size:1.9rem;margin:0 0 8px;text-align:center;line-height:1.2}
+.card h2::before,.card h2::after{content:"✦";font-family:"Nunito",sans-serif;color:var(--gold);font-size:.9rem;margin:0 8px;vertical-align:middle}
+.card .lead{margin:0 0 16px;text-align:center;font-weight:600;color:#5a2a20;line-height:1.5}
+.row{display:flex;gap:12px;padding:10px 0;border-bottom:2px dotted rgba(224,160,0,.7)}
+dl{margin:0 0 18px}
+dt{flex:0 0 100px;font-weight:800;color:var(--pine)}
+dd{margin:0;font-weight:700}
+.count{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 18px;text-align:center}
+.count div{background:var(--pine);color:var(--cream);border-radius:14px;padding:10px 2px;box-shadow:inset 0 0 8px rgba(0,0,0,.35)}
+.count b{display:block;font-family:"Rubik Mono One",sans-serif;font-weight:400;font-size:clamp(1.1rem,5.4vw,1.5rem);color:var(--gold);font-variant-numeric:tabular-nums}
+.count span{font-size:.75rem;font-weight:700;opacity:.9}
+.cta{display:flex;gap:12px}
+.btn{flex:1;display:block;text-align:center;text-decoration:none;padding:14px 10px;border-radius:999px;border:3px solid var(--pine);background:transparent;color:var(--pine);font:800 .98rem "Nunito",sans-serif;cursor:pointer;transition:transform .15s,background .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.y{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 4px 12px rgba(224,36,60,.4)}
+.btn.y:hover{background:#c81d33}
+.btn.sky{background:#4fc3ff;border-color:#4fc3ff;color:#06203a}
+.btn:active{transform:scale(.96)}
+.toast{min-height:1.4em;margin:14px 0 0;text-align:center;font-weight:800;color:var(--red)}
+
+.ov{position:fixed;inset:0;z-index:10;display:grid;place-items:center;padding:18px;background:rgba(4,26,20,.9);backdrop-filter:blur(8px);opacity:0;visibility:hidden;transition:opacity .4s,visibility 0s .4s;overflow:auto}
+.ov.show{opacity:1;visibility:visible;transition:opacity .4s}
+.ovcard{width:min(360px,100%);text-align:center;animation:pop .7s cubic-bezier(.2,1.4,.4,1) both}
+.ovcard>.btn{width:100%;margin-top:16px;flex:none}
+.ov-msg{margin:16px 0 0;font-family:"Marck Script",cursive;font-size:1.8rem;color:var(--gold);line-height:1.2}
+.okmsg{margin:12px 0 0;font-weight:800;color:#5dff9a}
+
+.ask{background:rgba(255,246,226,.08);border:3px solid var(--gold);border-radius:24px;padding:26px 20px 22px;box-shadow:0 24px 50px rgba(0,0,0,.5)}
+.ask h3{font-family:"Marck Script",cursive;font-weight:400;font-size:2.1rem;line-height:1.15;margin:0 0 6px;color:var(--gold)}
+.ask p{margin:0 0 16px;font-weight:600;opacity:.9}
+.ask input{width:100%;padding:15px 18px;border-radius:999px;border:3px solid var(--gold);background:var(--cream);color:var(--ink);font:800 1.05rem "Nunito",sans-serif;text-align:center}
+.err{min-height:1.3em;margin:8px 0 0!important;color:#ff9aa8;font-size:.9rem}
+.ask .btn{width:100%;margin-top:6px}
+
+.tkw{filter:drop-shadow(0 22px 28px rgba(0,0,0,.55))}
+.tk{background:var(--cream);color:var(--ink);border-radius:20px;border:3px solid var(--gold);position:relative;overflow:hidden;
+  -webkit-mask:radial-gradient(circle 13px at 0 calc(100% - 84px),#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 13px at 100% calc(100% - 84px),#0000 97%,#000) right/51% 100% no-repeat;
+  mask:radial-gradient(circle 13px at 0 calc(100% - 84px),#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 13px at 100% calc(100% - 84px),#0000 97%,#000) right/51% 100% no-repeat}
+.tk-main{padding:24px 20px 20px;background:linear-gradient(180deg,#fff,var(--cream))}
+.tk-k{margin:0;font-weight:800;color:var(--red);letter-spacing:.06em;text-transform:uppercase;font-size:.8rem}
+.tk-n{font-family:"Marck Script",cursive;font-size:2rem;margin:6px 0 0;color:var(--pine);line-height:1.15;overflow-wrap:anywhere}
+.tk-y{font-family:"Rubik Mono One",sans-serif;font-size:3.2rem;line-height:1.1;margin:4px 0;color:var(--gold);text-shadow:3px 3px 0 var(--red)}
+.tk-i{margin:10px 0 0;font-weight:700;line-height:1.5;font-size:.95rem;white-space:pre-line}
+.tk-stub{position:relative;border-top:3px dashed var(--gold);padding:0 20px;height:84px;background:#fff0c8;display:flex;align-items:center;justify-content:space-between;text-align:left}
+.tk-stub span{font-family:"Rubik Mono One",sans-serif;color:var(--pine);font-size:.95rem}
+.stamp{padding:6px 12px;border:3px solid var(--red);border-radius:10px;color:var(--red);font-family:"Rubik Mono One",sans-serif;font-size:.8rem;transform:rotate(-10deg);animation:stampIn .5s .7s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes stampIn{from{opacity:0;transform:scale(3) rotate(-30deg)}to{opacity:1;transform:scale(1) rotate(-10deg)}}
+.sorry{background:linear-gradient(180deg,#1b2a66,#101a45);border:3px solid var(--gold);border-radius:24px;padding:24px 20px;box-shadow:0 0 0 4px #4fc3ff,0 24px 50px rgba(0,0,0,.6);color:#fff}
+.sorry svg{width:110px;animation:wiggle 3s ease-in-out infinite;transform-origin:50% 100%}
+.sorry h3{font-family:"Marck Script",cursive;font-weight:400;font-size:2.1rem;margin:8px 0 4px;color:var(--gold)}
+.sorry p{margin:0;line-height:1.6;font-weight:600}
+.send{margin-top:14px;padding:14px;border-radius:18px;background:rgba(255,246,226,.08);border:1.5px dashed rgba(255,201,60,.6);text-align:left}
+.send p{margin:0 0 8px;font-weight:700;font-size:.92rem}
+.send input{width:100%;padding:10px 12px;border-radius:12px;border:0;background:rgba(0,0,0,.35);color:var(--cream);font:600 .85rem "Nunito",sans-serif;margin-bottom:10px}
+.sendrow{display:flex;gap:8px;flex-wrap:wrap}
+.send .btn{flex:1 1 110px;padding:11px 8px;color:var(--cream);border-color:var(--gold);font-size:.9rem}
+
+.own{margin-top:26px;padding:18px;border-radius:20px;background:rgba(0,0,0,.35);border:1.5px solid rgba(255,201,60,.5);text-align:left}
+.own h3{margin:0 0 4px;font-family:"Marck Script",cursive;font-weight:400;font-size:1.7rem;color:var(--gold)}
+.own ul{margin:10px 0 14px;padding:0;list-style:none;max-height:260px;overflow:auto}
+.own li{padding:6px 0;border-bottom:1px dotted rgba(255,246,226,.25);font-weight:600;overflow-wrap:anywhere}
+.own .btn{color:var(--cream);border-color:var(--gold);width:100%}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg id="wire" aria-hidden="true"></svg>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<main id="app">
+  <p class="greet">Шинэ жилийн баярын урилга</p>
+  <h1 class="year" id="year">2027</h1>
+
+  <svg class="tree" viewBox="0 0 200 236" role="img" aria-label="Шинэ жилийн гацуур мод">
+    <polygon class="star" points="100,2 107,19 125,19 110,30 116,48 100,38 84,48 90,30 75,19 93,19" fill="#ffc93c"/>
+    <polygon points="100,22 142,92 58,92" fill="#1f8a5b" stroke="#0d5a3b" stroke-width="3" stroke-linejoin="round"/>
+    <polygon points="100,58 160,140 40,140" fill="#23996a" stroke="#0d5a3b" stroke-width="3" stroke-linejoin="round"/>
+    <polygon points="100,98 180,192 20,192" fill="#2aa874" stroke="#0d5a3b" stroke-width="3" stroke-linejoin="round"/>
+    <rect x="86" y="192" width="28" height="30" rx="3" fill="#6b3f1d"/>
+    <ellipse cx="100" cy="226" rx="72" ry="8" fill="#fff6e2" opacity=".92"/>
+    <g fill="none" stroke="#ffc93c" stroke-width="3" stroke-dasharray="1 7" stroke-linecap="round">
+      <path d="M68 82Q100 98 132 82"/><path d="M52 128Q100 152 148 128"/><path d="M34 182Q100 212 166 182"/>
+    </g>
+    <g id="orns"></g>
+  </svg>
+
+  <button class="gift" id="gift" type="button" aria-label="Бэлгийг нээх">
+    <svg viewBox="0 0 160 120" aria-hidden="true">
+      <rect x="20" y="52" width="120" height="64" rx="6" fill="#e0243c"/>
+      <rect x="72" y="52" width="16" height="64" fill="#ffc93c"/>
+      <g class="lid">
+        <rect x="12" y="30" width="136" height="26" rx="6" fill="#c81d33"/>
+        <rect x="72" y="30" width="16" height="26" fill="#ffc93c"/>
+        <path d="M80 30C60 4 38 14 52 28ZM80 30C100 4 122 14 108 28Z" fill="#ffc93c"/>
+        <circle cx="80" cy="30" r="6" fill="#e0a800"/>
+      </g>
+    </svg>
+  </button>
+  <p class="hint">🎁 Бэлэг дээр дарж урилгаа нээгээрэй</p>
+
+  <section class="card" aria-label="Урилга">
+    <h2 id="guest"></h2>
+    <p class="lead">Хамтдаа шинэ жилээ угтцгаая. Дуу хуур, бэлэг, амар амгалан, инээд хөөр биднийг хүлээж байна!</p>
+    <dl>
+      <div class="row"><dt>Огноо</dt><dd id="f-date"></dd></div>
+      <div class="row"><dt>Цаг</dt><dd id="f-time"></dd></div>
+      <div class="row"><dt>Газар</dt><dd id="f-place"></dd></div>
+      <div class="row"><dt>Хувцаслалт</dt><dd id="f-dress"></dd></div>
+    </dl>
+    <div class="count" role="timer" aria-label="Үдэшлэг хүртэл">
+      <div><b id="c-d">0</b><span>өдөр</span></div>
+      <div><b id="c-h">0</b><span>цаг</span></div>
+      <div><b id="c-m">0</b><span>минут</span></div>
+      <div><b id="c-s">0</b><span>секунд</span></div>
+    </div>
+    <div class="cta">
+      <button class="btn y" type="button" data-r="y">Очно</button>
+      <button class="btn" type="button" data-r="n">Чадахгүй</button>
+    </div>
+    <p class="toast" id="toast" aria-live="polite"></p>
+  </section>
+
+  <section class="own" id="own" hidden>
+    <h3>Ирсэн хариултууд</h3>
+    <p id="ownSum"></p>
+    <ul id="ownList"></ul>
+    <button class="btn" id="ownCopy" type="button">Жагсаалт хуулах</button>
+  </section>
+</main>
+<div class="ov" id="ov" role="dialog" aria-modal="true" aria-live="polite"><div class="ovcard" id="ovcard"></div></div>
+
+<script>
+/* ===== Мэдээллээ энд засаарай ===== */
+const CONFIG={
+  org:"H&A Travel",
+  year:"2027",
+  guest:"Эрхэм хүндэт таныг H&A Travel шинэ жилийн үдэшлэгт урьж байна",
+  date:"2026 оны 12-р сарын 5",
+  time:"18:00 цагаас",
+  place:"Улаанбаатар, Flower Hotel",
+  dress:"Formal / Элегант",
+  target:new Date(2026,11,5,18,0,0),
+  formEmail:"oddnntodontuya@gmail.com",   /* хариу энэ имэйл рүү автоматаар очно */
+  contact:{phone:"",email:"oddnntodontuya@gmail.com"}   /* заавал биш: хариу илгээх утас, имэйл */
+};
+/* ================================== */
+const $=id=>document.getElementById(id);
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+$("year").textContent=CONFIG.year;
+$("guest").textContent=CONFIG.guest;
+$("f-date").textContent=CONFIG.date;$("f-time").textContent=CONFIG.time;
+$("f-place").textContent=CONFIG.place;$("f-dress").textContent=CONFIG.dress;
+function tick(){
+  const s=Math.floor(Math.max(0,CONFIG.target-new Date())/1000);
+  $("c-d").textContent=Math.floor(s/86400);
+  $("c-h").textContent=String(Math.floor(s%86400/3600)).padStart(2,"0");
+  $("c-m").textContent=String(Math.floor(s%3600/60)).padStart(2,"0");
+  $("c-s").textContent=String(s%60).padStart(2,"0");
+}
+tick();setInterval(tick,1000);
+
+/* Гэрлэн гоёл */
+const COL=["#e0243c","#ffc93c","#4fc3ff","#5dff9a","#ff8fd8"];
+function wire(){
+  const w=innerWidth,n=Math.max(8,Math.round(w/52)),sp=w/n,svg=$("wire");
+  let d="M0 4",b="";
+  for(let i=0;i<n;i++){
+    const x0=i*sp;d+=`Q${x0+sp/2} 44 ${x0+sp} 4`;
+    const col=COL[i%COL.length];
+    b+=`<circle class="bulb" cx="${x0+sp/2}" cy="28" r="7" fill="${col}" style="animation-delay:${(i%5)*.3}s;filter:drop-shadow(0 0 7px ${col})"/>`;
+  }
+  svg.setAttribute("viewBox",`0 0 ${w} 70`);
+  svg.innerHTML=`<path d="${d}" fill="none" stroke="#1b1b1b" stroke-width="2"/>`+b;
+}
+wire();addEventListener("resize",wire);
+
+/* Гацуурын гоёл */
+const O=[[100,70,7],[82,112,8],[120,118,8],[62,168,9],[100,150,9],[140,168,9],[78,184,7],[124,186,7],[100,44,6]];
+$("orns").innerHTML=O.map((o,i)=>`<circle class="orn" tabindex="0" role="button" aria-label="Гоёл" cx="${o[0]}" cy="${o[1]}" r="${o[2]}" fill="${COL[i%COL.length]}" stroke="#fff6e2" stroke-width="1.5" style="animation-delay:${i*.2}s"/>`).join("")
+ +[[88,100],[112,96],[70,136],[132,142],[50,182],[150,184],[100,176]].map((o,i)=>`<circle class="tw" cx="${o[0]}" cy="${o[1]}" r="2.6" fill="#fff6e2" style="animation-delay:${i*.25}s"/>`).join("");
+
+/* Од, цас, конфетти, салют, зүрх */
+const cv=$("fx"),c=cv.getContext("2d");let W,H,dpr;
+function size(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;c.setTransform(dpr,0,0,dpr,0,0)}
+size();addEventListener("resize",size);
+const snow=Array.from({length:reduce?0:70},()=>({x:Math.random(),y:Math.random(),r:Math.random()*2.4+.8,v:Math.random()*.7+.3,d:Math.random()*6}));
+const stars=Array.from({length:60},()=>({x:Math.random(),y:Math.random()*.6,r:Math.random()*1.3+.4,p:Math.random()*6}));
+let conf=[],sparks=[],hearts=[],hv=0;
+function confetti(x,y,n,spread){
+  if(reduce)return;
+  for(let i=0;i<n;i++){const a=-Math.PI/2+(Math.random()-.5)*spread,s=Math.random()*10+4;
+    conf.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,w:Math.random()*8+5,h:Math.random()*5+3,rot:Math.random()*6,vr:(Math.random()-.5)*.4,col:COL[Math.floor(Math.random()*COL.length)],life:1})}
+}
+function firework(x,y){
+  if(reduce)return;
+  const col=COL[Math.floor(Math.random()*COL.length)];
+  for(let i=0;i<60;i++){const a=i/60*6.283,s=Math.random()*5+2;sparks.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,col})}
+}
+function heart(){hearts.push({x:Math.random()*W,y:H+20,v:Math.random()+.7,s:Math.random()*10+9,d:Math.random()*6,col:["#ff8fd8","#ffc93c","#fff6e2"][Math.floor(Math.random()*3)]})}
+function frame(t){
+  c.clearRect(0,0,W,H);
+  c.fillStyle="#fff6e2";
+  for(const s of stars){c.globalAlpha=.25+.55*Math.abs(Math.sin(t/900+s.p));c.beginPath();c.arc(s.x*W,s.y*H,s.r,0,6.283);c.fill()}
+  c.globalAlpha=.85;
+  for(const f of snow){f.y+=f.v/H;f.d+=.012;f.x+=Math.sin(f.d)*.4/W;if(f.y>1.01){f.y=-.01;f.x=Math.random()}c.beginPath();c.arc(f.x*W,f.y*H,f.r,0,6.283);c.fill()}
+  conf=conf.filter(p=>p.life>0&&p.y<H+30);
+  for(const p of conf){p.vy+=.28;p.vx*=.985;p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.life-=.004;
+    c.save();c.translate(p.x,p.y);c.rotate(p.rot);c.fillStyle=p.col;c.globalAlpha=Math.min(1,p.life*2);c.fillRect(-p.w/2,-p.h/2,p.w,p.h);c.restore()}
+  sparks=sparks.filter(q=>q.life>0);
+  for(const q of sparks){q.vy+=.06;q.vx*=.985;q.vy*=.985;q.x+=q.vx;q.y+=q.vy;q.life-=.016;c.globalAlpha=Math.max(q.life,0);c.fillStyle=q.col;c.beginPath();c.arc(q.x,q.y,2.2,0,6.283);c.fill()}
+  hearts=hearts.filter(h=>h.y>-30);
+  for(const h of hearts){h.y-=h.v;h.d+=.03;h.x+=Math.sin(h.d)*.6;c.globalAlpha=.9;c.fillStyle=h.col;c.save();c.translate(h.x,h.y);const k=h.s/10;c.scale(k,k);c.beginPath();c.moveTo(0,4);c.bezierCurveTo(-10,-4,-6,-12,0,-6);c.bezierCurveTo(6,-12,10,-4,0,4);c.fill();c.restore()}
+  c.globalAlpha=1;
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* Гоёл, бэлэг */
+document.querySelectorAll(".orn").forEach(el=>{
+  const go=()=>{const r=el.getBoundingClientRect();confetti(r.left+r.width/2,r.top+r.height/2,30,3.2)};
+  el.addEventListener("click",go);
+  el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}});
+});
+$("gift").addEventListener("click",()=>{
+  const app=$("app");if(app.classList.contains("opened"))return;
+  app.classList.add("opened");
+  const r=$("gift").getBoundingClientRect();
+  confetti(r.left+r.width/2,r.top+30,140,2.4);
+  setTimeout(()=>{confetti(W*.2,H*.9,70,1.2);confetti(W*.8,H*.9,70,1.2)},350);
+  setTimeout(()=>document.querySelector(".card").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"}),500);
+});
+
+/* Хариу бүртгэх (db нь зөвхөн нээгдсэн үед л асна) */
+let store=null,uid=null,ans=null,myName="";
+const ANS={y:"Очно",n:"Чадахгүй"};
+async function initRT(){
+  if(!window.claude||!claude.use)return;
+  try{
+    const [user,db]=await Promise.all([claude.use("user"),claude.use("db")]);
+    if(!db||!user)return;
+    uid=await user.id();
+    if(!uid)return;
+    store=db;
+    const mine=await db.doc("rsvps/"+uid).get();
+    if(mine.exists){const d=mine.data();myName=d.name||"";$("toast").textContent="Таны өмнөх хариу: "+(ANS[d.answer]||"")+(myName?" ("+myName+")":"")}
+    if(await user.canEdit()){
+      $("own").hidden=false;
+      db.collection("rsvps").orderBy("ts","desc").limit(500).onSnapshot(s=>renderOwner(s.docs.map(d=>d.data())),()=>{});
+    }
+  }catch(e){store=null}
+}
+initRT();
+let ownText="";
+function renderOwner(list){
+  const y=list.filter(d=>d.answer==="y"),n=list.filter(d=>d.answer==="n");
+  $("ownSum").textContent="Очно: "+y.length+"   Чадахгүй: "+n.length;
+  const ul=$("ownList");ul.textContent="";
+  list.forEach(d=>{const li=document.createElement("li");li.textContent=(d.answer==="y"?"✓ ":"✕ ")+(d.name||"")+" ";ul.appendChild(li)});
+  ownText="Очно ("+y.length+"):\n"+y.map((d,i)=>(i+1)+". "+d.name).join("\n")+"\n\nЧадахгүй ("+n.length+"):\n"+n.map((d,i)=>(i+1)+". "+d.name).join("\n");
+}
+$("ownCopy").addEventListener("click",async e=>{
+  try{await navigator.clipboard.writeText(ownText);e.target.textContent="Хуулагдлаа ✓"}catch(x){e.target.textContent="Хуулж чадсангүй"}
+  setTimeout(()=>e.target.textContent="Жагсаалт хуулах",2000);
+});
+
+/* Урилгын хариу: нэр асуух, дараа нь тасалбар эсвэл захидал */
+const ov=$("ov"),oc=$("ovcard");
+function closeRsvp(){ov.classList.remove("show");clearInterval(hv)}
+ov.addEventListener("click",e=>{if(e.target===ov||e.target.id==="ovx")closeRsvp()});
+addEventListener("keydown",e=>{if(e.key==="Escape")closeRsvp()});
+document.querySelectorAll(".card .btn").forEach(b=>b.addEventListener("click",()=>askName(b.dataset.r)));
+
+function askName(a){
+  ans=a;clearInterval(hv);
+  oc.innerHTML=`<div class="ask"><h3 id="askT"></h3><p>Нэрээ бичвэл урилга дээр тань хэвлэгдэнэ</p><input id="nm" type="text" maxlength="60" autocomplete="name" placeholder="Овог, нэр" aria-label="Таны нэр"><p class="err" id="err" role="alert"></p><button class="btn y" id="nmOk" type="button">Баталгаажуулах</button></div>`;
+  $("askT").textContent=a==="y"?"Баяртай! Нэрээ бичнэ үү":"Ойлголоо. Нэрээ бичнэ үү";
+  const nm=$("nm");nm.value=myName;
+  $("nmOk").addEventListener("click",submit);
+  nm.addEventListener("keydown",e=>{if(e.key==="Enter")submit()});
+  ov.classList.add("show");
+  setTimeout(()=>nm.focus({preventScroll:true}),450);
+}
+async function submit(){
+  const name=$("nm").value.trim().replace(/\s+/g," ");
+  if(name.length<2){$("err").textContent="Нэрээ бичнэ үү";$("nm").focus();return}
+  myName=name;
+  const btn=$("nmOk");btn.disabled=true;btn.textContent="Хадгалж байна…";
+  let saved=false;
+  if(store&&uid){try{await store.doc("rsvps/"+uid).set({name,answer:ans,ts:Date.now()});saved=true}catch(e){saved=false}}
+  if(CONFIG.formEmail){
+    try{
+      const r=await fetch("https://formsubmit.co/ajax/"+CONFIG.formEmail,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
+        body:JSON.stringify({_subject:CONFIG.org+" урилгын хариу: "+name+" - "+ANS[ans],"Нэр":name,"Хариу":ANS[ans],"Огноо":new Date().toLocaleString("mn-MN"),_template:"table",_captcha:"false"})});
+      const j=await r.json();
+      if(r.ok&&String(j.success)!=="false")saved=true;
+    }catch(e){}
+  }
+  $("toast").textContent="Таны хариу: "+ANS[ans]+" ("+name+")";
+  showResult(saved);
+}
+function ticketNo(s){let h=7;for(const ch of s)h=(h*31+ch.charCodeAt(0))%9000;return 1000+h}
+function sendBlock(saved){
+  const k=CONFIG.contact||{};
+  const ok=saved?`<p class="okmsg">✓ Таны хариу зохион байгуулагчид бүртгэгдлээ</p>`:"";
+  if(saved)return ok;
+  return ok+`<div class="send"><p>Хариугаа зохион байгуулагчид илгээнэ үү:</p><input id="msgBox" readonly aria-label="Илгээх мессеж"><div class="sendrow"><button class="btn" id="sendBtn" type="button">Илгээх</button>${k.phone?`<a class="btn" id="smsA">SMS</a>`:""}${k.email?`<a class="btn" id="mailA">Имэйл</a>`:""}</div></div>`;
+}
+function wireSend(saved){
+  const k0=CONFIG.contact||{};
+  if(saved)return;
+  const msg=CONFIG.org+" шинэ жилийн үдэшлэг: "+myName+" - "+(ans==="y"?"очно":"ирж чадахгүй");
+  $("msgBox").value=msg;
+  const k=CONFIG.contact||{};
+  if(k.phone)$("smsA").href="sms:"+k.phone+"?body="+encodeURIComponent(msg);
+  if(k.email)$("mailA").href="mailto:"+k.email+"?subject="+encodeURIComponent(CONFIG.org+" урилгын хариу")+"&body="+encodeURIComponent(msg);
+  $("sendBtn").addEventListener("click",async e=>{
+    try{if(navigator.share){await navigator.share({text:msg});return}}catch(x){if(x&&x.name==="AbortError")return}
+    try{await navigator.clipboard.writeText(msg);e.target.textContent="Хуулагдлаа ✓"}catch(x){$("msgBox").select();e.target.textContent="Дээрх текстийг хуулна уу"}
+  });
+}
+function showResult(saved){
+  if(ans==="y"){
+    oc.innerHTML=`<div class="tkw"><div class="tk"><div class="tk-main"><p class="tk-k" id="tOrg"></p><p class="tk-n" id="tName"></p><p class="tk-y" id="tYear"></p><p class="tk-i" id="tInfo"></p></div><div class="tk-stub"><span id="tNo"></span><div class="stamp">Баталгаажлаа</div></div></div></div><p class="ov-msg">Тэсэн ядан хүлээж байна!</p>${sendBlock(saved)}<button class="btn y" id="ovx" type="button">Баярлалаа</button>`;
+    $("tOrg").textContent=CONFIG.org+" шинэ жилийн үдэшлэг";
+    $("tName").textContent=myName;
+    $("tYear").textContent=CONFIG.year;
+    $("tInfo").textContent=CONFIG.date+"\n"+CONFIG.time+"\n"+CONFIG.place;
+    $("tNo").textContent="№ "+ticketNo(myName);
+    for(let i=0;i<7;i++)setTimeout(()=>firework(W*(.12+Math.random()*.76),H*(.1+Math.random()*.4)),i*380);
+    confetti(W/2,H*.7,120,2.6);
+  }else{
+    oc.innerHTML=`<div class="sorry"><svg viewBox="0 0 120 140" aria-hidden="true"><circle cx="60" cy="102" r="34" fill="#fff6e2"/><circle cx="60" cy="46" r="24" fill="#fff6e2"/><circle cx="52" cy="42" r="3" fill="#222"/><circle cx="68" cy="42" r="3" fill="#222"/><polygon points="60,48 84,52 60,56" fill="#ff8a2a"/><path d="M50 59Q60 68 70 59" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/><rect x="38" y="66" width="44" height="9" rx="4" fill="#e0243c"/><rect x="66" y="70" width="10" height="24" rx="4" fill="#e0243c"/><circle cx="60" cy="96" r="3" fill="#222"/><circle cx="60" cy="110" r="3" fill="#222"/></svg><h3 id="sName"></h3><p>Таньд дулаахан, амар амгалан, хүссэн бүхэн тань биелэх шинэ жил хүсье. Дараа заавал хамт байцгаая!</p></div>${sendBlock(saved)}<button class="btn y sky" id="ovx" type="button">Баярлалаа</button>`;
+    $("sName").textContent=myName+", харамсалтай ч ойлголоо";
+    if(!reduce){for(let i=0;i<8;i++)setTimeout(heart,i*160);hv=setInterval(heart,300)}
+  }
+  wireSend(saved);
+  setTimeout(()=>{const x=$("ovx");if(x)x.focus({preventScroll:true})},500);
+}
+</script>
+</body>
+</html>
