@@ -120,7 +120,7 @@ dl{margin:0 0 16px}dt{flex:0 0 108px;font-weight:800;color:#2b1d6e}dd{margin:0;f
   <div class="stage">
     <section class="card" aria-label="Урилга">
       <h2 id="guest"></h2>
-      <p class="lead">Хамтдаа шинэ жилээ угтацгаая. Дуу хуур, бэлэг, амар амгалан, инээд хөөр биднийг хүлээж байна!</p>
+      <p class="lead">Хамтдаа шинэ жилээ угтацгаая. Дуу хуур, бэлэг, азтан, инээд хөөр биднийг хүлээж байна!</p>
       <dl>
         <div class="row"><dt>Огноо</dt><dd id="f-date"></dd></div>
         <div class="row"><dt>Цаг</dt><dd id="f-time"></dd></div>
@@ -275,8 +275,8 @@ addEventListener("keydown",e=>{if(e.key==="Escape")closeRsvp()});
 document.querySelectorAll(".cta .btn").forEach(b=>b.addEventListener("click",()=>askName(b.dataset.r)));
 function askName(a){
   ans=a;clearInterval(hv);
-  oc.innerHTML=`<div class="ask"><h3 id="askT"></h3><p>Мэдээллээ бичвэл урилга дээр тань хэвлэгдэнэ</p><input id="nm" type="text" maxlength="60" autocomplete="name" placeholder="Овог, нэр" aria-label="Таны нэр"><input id="wp" type="text" maxlength="80" autocomplete="organization" placeholder="Ажлын газрын нэр" aria-label="Ажлын газрын нэр"><input id="ps" type="text" maxlength="80" autocomplete="organization-title" placeholder="Албан тушаал" aria-label="Албан тушаал"><p class="err" id="err" role="alert"></p><button class="btn y" id="nmOk" type="button">Баталгаажуулах</button></div>`;
-  $("askT").textContent=a==="y"?"Баяртай! Мэдээллээ бичнэ үү":"Ойлголоо. Мэдээллээ бичнэ үү";
+  oc.innerHTML=`<div class="ask"><h3 id="askT"></h3><p>Үнэн зөв бөглөөрэй баярлалаа.</p><input id="nm" type="text" maxlength="60" autocomplete="name" placeholder="Овог, нэр" aria-label="Таны нэр"><input id="wp" type="text" maxlength="80" autocomplete="organization" placeholder="Ажлын газрын нэр" aria-label="Ажлын газрын нэр"><input id="ps" type="text" maxlength="80" autocomplete="organization-title" placeholder="Албан тушаал" aria-label="Албан тушаал"><p class="err" id="err" role="alert"></p><button class="btn y" id="nmOk" type="button">Баталгаажуулах</button></div>`;
+  $("askT").textContent=a==="y"?"Баярлалаа! Мэдээллээ бичнэ үү":"Ойлголоо. Мэдээллээ бичнэ үү";
   const nm=$("nm");nm.value=myName;$("wp").value=myWork;$("ps").value=myRole;$("nmOk").addEventListener("click",submit);["nm","wp","ps"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter")submit()}));
   ov.classList.add("show");setTimeout(()=>nm.focus({preventScroll:true}),450);
 }
@@ -322,7 +322,7 @@ function showResult(saved){
     for(let i=0;i<7;i++)setTimeout(()=>firework(W*(.12+Math.random()*.76),H*(.1+Math.random()*.4)),i*380);
     confetti(W/2,H*.7,120,2.6);
   }else{
-    oc.innerHTML=`<div class="sorry"><div style="font-size:4rem">⛄</div><h3 id="sName"></h3><p>Таньд дулаахан, амар амгалан, хүссэн бүхэн тань биелэх шинэ жил хүсье. Дараа заавал хамт байцгаая!</p></div>${sendBlock(saved)}<button class="btn y" id="ovx" type="button">Баярлалаа</button>`;
+    oc.innerHTML=`<div class="sorry"><div style="font-size:4rem">⛄</div><h3 id="sName"></h3><p>Шинэ ондоо юу санасан есөн цагаан хүсэл нь сэтгэлчлэн биелэх болтугай. Дараа заавал хамт байцгаая!</p></div>${sendBlock(saved)}<button class="btn y" id="ovx" type="button">Баярлалаа</button>`;
     $("sName").textContent=myName+", харамсалтай ч ойлголоо";
     if(!reduce){for(let i=0;i<8;i++)setTimeout(heart,i*160);hv=setInterval(heart,300)}
   }
