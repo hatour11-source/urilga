@@ -70,6 +70,8 @@ dl{margin:0 0 16px}dt{flex:0 0 108px;font-weight:800;color:#2b1d6e}dd{margin:0;f
 .tk-main{padding:22px 20px 16px;background:linear-gradient(180deg,#fff,#ffe9c2)}
 .tk-k{margin:0;font-weight:800;color:#c9184a;letter-spacing:.06em;text-transform:uppercase;font-size:.78rem}
 .tk-n{font:400 2rem/1.15 "Marck Script",cursive;margin:6px 0 0;color:#2b1d6e;overflow-wrap:anywhere}
+.tk-w{margin:4px 0 0;font-weight:800;color:#5a2a40;font-size:.95rem;overflow-wrap:anywhere}
+.ask input+input{margin-top:10px}
 .tk-y{font:400 3rem/1.1 "Rubik Mono One",sans-serif;margin:4px 0;color:var(--gold);text-shadow:3px 3px 0 #c9184a}
 .tk-i{margin:8px 0 0;font-weight:800;line-height:1.5;font-size:.95rem;white-space:pre-line}
 .tk-stub{border-top:3px dashed var(--gold);padding:0 20px;height:76px;background:#ffeab8;display:flex;align-items:center;justify-content:space-between}
@@ -242,7 +244,7 @@ const WISH=["Шинэ ондоо мөнгө нь урсаж, данс нь дү�
 $("wishBtn").addEventListener("click",e=>{$("toast").textContent=WISH[Math.floor(Math.random()*WISH.length)];[C5,E,G,C5*2,E*2].forEach((f,k)=>setTimeout(()=>note(f,.4,.12),k*90));const r=e.currentTarget.getBoundingClientRect();confetti(r.left+r.width/2,r.top,50,2.4)});
 
 /* Хариу бүртгэх */
-let store=null,uid=null,ans=null,myName="";
+let store=null,uid=null,ans=null,myName="",myWork="",myRole="";
 const ANS={y:"Очно",n:"Чадахгүй"};
 async function initRT(){
   if(!window.claude||!claude.use)return;
@@ -250,7 +252,7 @@ async function initRT(){
     const [user,db]=await Promise.all([claude.use("user"),claude.use("db")]);
     if(!db||!user)return;uid=await user.id();if(!uid)return;store=db;
     const mine=await db.doc("rsvps/"+uid).get();
-    if(mine.exists){const d=mine.data();myName=d.name||"";$("toast").textContent="Таны өмнөх хариу: "+(ANS[d.answer]||"")+(myName?" ("+myName+")":"")}
+    if(mine.exists){const d=mine.data();myName=d.name||"";myWork=d.work||"";myRole=d.role||"";$("toast").textContent="Таны өмнөх хариу: "+(ANS[d.answer]||"")+(myName?" ("+myName+")":"")}
     if(await user.canEdit()){$("own").hidden=false;db.collection("rsvps").orderBy("ts","desc").limit(500).onSnapshot(s=>renderOwner(s.docs.map(d=>d.data())),()=>{})}
   }catch(e){store=null}
 }
@@ -260,8 +262,9 @@ function renderOwner(list){
   const y=list.filter(d=>d.answer==="y"),n=list.filter(d=>d.answer==="n");
   $("ownSum").textContent="Очно: "+y.length+"   Чадахгүй: "+n.length;
   const ul=$("ownList");ul.textContent="";
-  list.forEach(d=>{const li=document.createElement("li");li.textContent=(d.answer==="y"?"✓ ":"✕ ")+(d.name||"");ul.appendChild(li)});
-  ownText="Очно ("+y.length+"):\n"+y.map((d,i)=>(i+1)+". "+d.name).join("\n")+"\n\nЧадахгүй ("+n.length+"):\n"+n.map((d,i)=>(i+1)+". "+d.name).join("\n");
+  list.forEach(d=>{const li=document.createElement("li");li.textContent=(d.answer==="y"?"✓ ":"✕ ")+(d.name||"")+(d.work?" — "+d.work:"")+(d.role?", "+d.role:"");ul.appendChild(li)});
+  const fm=(d,i)=>(i+1)+". "+d.name+(d.work?" — "+d.work:"")+(d.role?", "+d.role:"");
+  ownText="Очно ("+y.length+"):\n"+y.map(fm).join("\n")+"\n\nЧадахгүй ("+n.length+"):\n"+n.map(fm).join("\n");
 }
 $("ownCopy").addEventListener("click",async e=>{try{await navigator.clipboard.writeText(ownText);e.target.textContent="Хуулагдлаа ✓"}catch(x){e.target.textContent="Хуулж чадсангүй"}setTimeout(()=>e.target.textContent="Жагсаалт хуулах",2000)});
 
@@ -272,19 +275,22 @@ addEventListener("keydown",e=>{if(e.key==="Escape")closeRsvp()});
 document.querySelectorAll(".cta .btn").forEach(b=>b.addEventListener("click",()=>askName(b.dataset.r)));
 function askName(a){
   ans=a;clearInterval(hv);
-  oc.innerHTML=`<div class="ask"><h3 id="askT"></h3><p>Нэрээ бичвэл урилга дээр тань хэвлэгдэнэ</p><input id="nm" type="text" maxlength="60" autocomplete="name" placeholder="Овог, нэр" aria-label="Таны нэр"><p class="err" id="err" role="alert"></p><button class="btn y" id="nmOk" type="button">Баталгаажуулах</button></div>`;
-  $("askT").textContent=a==="y"?"Баяртай! Нэрээ бичнэ үү":"Ойлголоо. Нэрээ бичнэ үү";
-  const nm=$("nm");nm.value=myName;$("nmOk").addEventListener("click",submit);nm.addEventListener("keydown",e=>{if(e.key==="Enter")submit()});
+  oc.innerHTML=`<div class="ask"><h3 id="askT"></h3><p>Мэдээллээ бичвэл урилга дээр тань хэвлэгдэнэ</p><input id="nm" type="text" maxlength="60" autocomplete="name" placeholder="Овог, нэр" aria-label="Таны нэр"><input id="wp" type="text" maxlength="80" autocomplete="organization" placeholder="Ажлын газрын нэр" aria-label="Ажлын газрын нэр"><input id="ps" type="text" maxlength="80" autocomplete="organization-title" placeholder="Албан тушаал" aria-label="Албан тушаал"><p class="err" id="err" role="alert"></p><button class="btn y" id="nmOk" type="button">Баталгаажуулах</button></div>`;
+  $("askT").textContent=a==="y"?"Баяртай! Мэдээллээ бичнэ үү":"Ойлголоо. Мэдээллээ бичнэ үү";
+  const nm=$("nm");nm.value=myName;$("wp").value=myWork;$("ps").value=myRole;$("nmOk").addEventListener("click",submit);["nm","wp","ps"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter")submit()}));
   ov.classList.add("show");setTimeout(()=>nm.focus({preventScroll:true}),450);
 }
 async function submit(){
   const name=$("nm").value.trim().replace(/\s+/g," ");
+  const work=$("wp").value.trim().replace(/\s+/g," "),role=$("ps").value.trim().replace(/\s+/g," ");
   if(name.length<2){$("err").textContent="Нэрээ бичнэ үү";$("nm").focus();return}
-  myName=name;const btn=$("nmOk");btn.disabled=true;btn.textContent="Хадгалж байна…";
+  if(work.length<2){$("err").textContent="Ажлын газрын нэрээ бичнэ үү";$("wp").focus();return}
+  if(role.length<2){$("err").textContent="Албан тушаалаа бичнэ үү";$("ps").focus();return}
+  myName=name;myWork=work;myRole=role;const btn=$("nmOk");btn.disabled=true;btn.textContent="Хадгалж байна…";
   let saved=false;
-  if(store&&uid){try{await store.doc("rsvps/"+uid).set({name,answer:ans,ts:Date.now()});saved=true}catch(e){}}
+  if(store&&uid){try{await store.doc("rsvps/"+uid).set({name,work,role,answer:ans,ts:Date.now()});saved=true}catch(e){}}
   if(CONFIG.formEmail){try{
-    const r=await fetch("https://formsubmit.co/ajax/"+CONFIG.formEmail,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({_subject:CONFIG.org+" урилгын хариу: "+name+" - "+ANS[ans],"Нэр":name,"Хариу":ANS[ans],"Огноо":new Date().toLocaleString("mn-MN"),_template:"table",_captcha:"false"})});
+    const r=await fetch("https://formsubmit.co/ajax/"+CONFIG.formEmail,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({_subject:CONFIG.org+" урилгын хариу: "+name+" - "+ANS[ans],"Нэр":name,"Ажлын газар":work,"Албан тушаал":role,"Хариу":ANS[ans],"Огноо":new Date().toLocaleString("mn-MN"),_template:"table",_captcha:"false"})});
     const j=await r.json();if(r.ok&&String(j.success)!=="false")saved=true;
   }catch(e){}}
   $("toast").textContent="Таны хариу: "+ANS[ans]+" ("+name+")";
@@ -294,11 +300,11 @@ function ticketNo(s){let h=7;for(const ch of s)h=(h*31+ch.charCodeAt(0))%9000;re
 function sendBlock(saved){
   if(saved)return `<p class="okmsg">✓ Таны хариу зохион байгуулагчид бүртгэгдлээ</p>`;
   const k=CONFIG.contact||{};
-  return `<div class="send"><p style="margin:0;font-weight:700">Хариугаа зохион байгуулагчид илгээнэ үү:</p><input id="msgBox" readonly aria-label="Илгээх мессеж"><div class="cta"><button class="btn" id="sendBtn" type="button">Илгээх</button>${k.phone?`<a class="btn" id="smsA">SMS</a>`:""}${k.email?`<a class="btn" id="mailA">Имэйл</a>`:""}</div></div>`;
+  return `<div class="send"><p style="margin:0;font-weight:700">Хариугаа зохион байгуулагчид илгээнэ үү:</p><input id="msgBox" readonly aria-label="Илгээх мессеж"><div class="cta">${k.phone?`<a class="btn" id="smsA">SMS</a>`:""}${k.email?`<a class="btn" id="mailA">Имэйлээр илгээх</a>`:""}</div></div>`;
 }
 function wireSend(saved){
   if(saved)return;
-  const msg=CONFIG.org+" шинэ жилийн үдэшлэг: "+myName+" - "+(ans==="y"?"очно":"ирж чадахгүй"),k=CONFIG.contact||{};
+  const msg=CONFIG.org+" шинэ жилийн үдэшлэг: "+myName+" ("+myWork+", "+myRole+") - "+(ans==="y"?"очно":"ирж чадахгүй"),k=CONFIG.contact||{};
   $("msgBox").value=msg;
   if(k.phone)$("smsA").href="sms:"+k.phone+"?body="+encodeURIComponent(msg);
   if(k.email){
@@ -307,15 +313,11 @@ function wireSend(saved){
     if(mobile){a.href="mailto:"+k.email+"?subject="+sub+"&body="+body}
     else{a.href="https://mail.google.com/mail/?view=cm&fs=1&to="+encodeURIComponent(k.email)+"&su="+sub+"&body="+body;a.target="_blank";a.rel="noopener"}
   }
-  $("sendBtn").addEventListener("click",async e=>{
-    try{if(navigator.share){await navigator.share({text:msg});return}}catch(x){if(x&&x.name==="AbortError")return}
-    try{await navigator.clipboard.writeText(msg);e.target.textContent="Хуулагдлаа ✓"}catch(x){$("msgBox").select();e.target.textContent="Текстийг хуулна уу"}
-  });
 }
 function showResult(saved){
   if(ans==="y"){
-    oc.innerHTML=`<div class="tk"><div class="tk-main"><p class="tk-k" id="tOrg"></p><p class="tk-n" id="tName"></p><p class="tk-y" id="tYear"></p><p class="tk-i" id="tInfo"></p></div><div class="tk-stub"><span id="tNo"></span><div class="stamp">Баталгаажлаа</div></div></div><p class="ov-msg">Тэсэн ядан хүлээж байна!</p>${sendBlock(saved)}<button class="btn y" id="ovx" type="button">Баярлалаа</button>`;
-    $("tOrg").textContent=CONFIG.org+" шинэ жилийн үдэшлэг";$("tName").textContent=myName;$("tYear").textContent=CONFIG.year;
+    oc.innerHTML=`<div class="tk"><div class="tk-main"><p class="tk-k" id="tOrg"></p><p class="tk-n" id="tName"></p><p class="tk-w" id="tWork"></p><p class="tk-y" id="tYear"></p><p class="tk-i" id="tInfo"></p></div><div class="tk-stub"><span id="tNo"></span><div class="stamp">Баталгаажлаа</div></div></div><p class="ov-msg">Тэсэн ядан хүлээж байна!</p>${sendBlock(saved)}<button class="btn y" id="ovx" type="button">Баярлалаа</button>`;
+    $("tOrg").textContent=CONFIG.org+" шинэ жилийн үдэшлэг";$("tName").textContent=myName;$("tWork").textContent=myWork+" · "+myRole;$("tYear").textContent=CONFIG.year;
     $("tInfo").textContent=CONFIG.date+"\n"+CONFIG.time+"\n"+CONFIG.place;$("tNo").textContent="№ "+ticketNo(myName);
     for(let i=0;i<7;i++)setTimeout(()=>firework(W*(.12+Math.random()*.76),H*(.1+Math.random()*.4)),i*380);
     confetti(W/2,H*.7,120,2.6);
